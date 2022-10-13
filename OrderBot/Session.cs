@@ -24,8 +24,8 @@ namespace OrderBot
             switch (this.nCur)
             {
                 case State.WELCOMING:
-                    aMessages.Add("Welcome to Rich's Shawarama!");
-                    aMessages.Add("What size would you like?");
+                    aMessages.Add("Welcome to GTA Properties!");
+                    aMessages.Add("My name is Alice, How may I help you Today?");
                     this.nCur = State.SIZE;
                     break;
                 case State.SIZE:
