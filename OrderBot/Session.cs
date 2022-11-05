@@ -6,7 +6,7 @@ namespace OrderBot
     {
         private enum State
         {
-            WELCOMING, SIZE, PROTEIN
+            WELCOMING, PROPERTY_FINALIZED, FINALIZED , APPOINTMENT_PROPERTY_WATCHED , APPOINTMENT_PROPERTY_NOTWATCHED
         }
 
         private State nCur = State.WELCOMING;
@@ -26,18 +26,43 @@ namespace OrderBot
                 case State.WELCOMING:
                     aMessages.Add("Welcome to GTA Properties!");
                     aMessages.Add("My name is Alice, How may I help you Today?");
-                    this.nCur = State.SIZE;
+                    this.nCur = State.PROPERTY_FINALIZED;
                     break;
-                case State.SIZE:
-                    this.oOrder.Size = sInMessage;
+                case State.PROPERTY_FINALIZED:
+                    string message = sInMessage;
                     this.oOrder.Save();
-                    aMessages.Add("What protein would you like on this  " + this.oOrder.Size + " Shawarama?");
-                    this.nCur = State.PROTEIN;
+                    aMessages.Add("Have you finalized the property? "+"\nYes\\No");
+                    this.nCur = State.FINALIZED;
                     break;
-                case State.PROTEIN:
-                    string sProtein = sInMessage;
-                    aMessages.Add("What toppings would you like on this  " + this.oOrder.Size + " " + sProtein + " Shawarama?");
+                case State.FINALIZED:
+                
+                 string FINALIZED = sInMessage;
+                    this.oOrder.Save();
+                    if(FINALIZED.ToUpper()== "YES"){
+                         aMessages.Add("As You already finalized the property.Should I book your appointment?"+ "\nYes\\No");
+                      this.nCur = State.APPOINTMENT_PROPERTY_WATCHED;
                     break;
+                }
+                    else if(FINALIZED.ToUpper()== "NO"){ 
+                        aMessages.Add("We have plenty of properties available. Should I book your appointment?"+ "\nYes\\No");
+                    this.nCur = State.APPOINTMENT_PROPERTY_NOTWATCHED;
+                    break;
+                    }else
+                    break;
+
+                   case State.APPOINTMENT_PROPERTY_WATCHED:
+                   string APPOINTMENT_PROPERTY_WATCHED = sInMessage;
+                    this.oOrder.Save();
+                     if(APPOINTMENT_PROPERTY_WATCHED.ToUpper()== "YES"){
+                         aMessages.Add("Choose one from below options:" + "\n1. New Appointment"+ "\n2. Reschedule Appointment" + "\n3. Cancel Appointment");
+                    break;
+                }
+                    else if(APPOINTMENT_PROPERTY_WATCHED.ToUpper()== "NO"){ 
+                        aMessages.Add("blank");
+                    break;
+                    }else
+                    break;
+                    
 
 
             }
